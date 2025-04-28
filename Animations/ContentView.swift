@@ -35,24 +35,54 @@ struct ContentView: View {
     @State private var dragAmount = CGSize.zero
     @State private var isShowingRed = false
     
+    @State private var rotationY = 0.0
+    @State private var fadeOutOpacity = 1.0
+    
     var body: some View {
         
-        ZStack {
-            Rectangle()
-                .fill(.blue)
-                .frame(width: 200, height: 200)
-            if isShowingRed {
-                Rectangle()
-                    .fill(.red)
-                    .frame(width: 200, height: 200)
-                    .transition(.pivot)
+        // TODO: the other one which didn't get the choice <- scale down
+        VStack(spacing: 30) {
+            Button {
+                withAnimation(.spring(duration: 1, bounce: 0.5)) {
+                   rotationY += 360
+                }
+            } label: {
+                Image("Korea")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .shadow(radius: 10)
+                    .rotation3DEffect(.degrees(rotationY), axis: (x: 0, y: 1, z: 0))
             }
-        }
-        .onTapGesture {
-            withAnimation {
-                isShowingRed.toggle()
+            
+            Button {
+                withAnimation(.spring(duration: 1, bounce: 0.5)) {
+                    fadeOutOpacity = 0.25
+                }
+            } label: {
+                Image("US")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .shadow(radius: 10)
+                    .opacity(fadeOutOpacity)
             }
-        }
+        }.padding()
+        
+//        ZStack {
+//            Rectangle()
+//                .fill(.blue)
+//                .frame(width: 200, height: 200)
+//            if isShowingRed {
+//                Rectangle()
+//                    .fill(.red)
+//                    .frame(width: 200, height: 200)
+//                    .transition(.pivot)
+//            }
+//        }
+//        .onTapGesture {
+//            withAnimation {
+//                isShowingRed.toggle()
+//            }
+//        }
         
 //        Button("Tap me") {
 //            withAnimation {
