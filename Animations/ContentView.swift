@@ -37,6 +37,7 @@ struct ContentView: View {
     
     @State private var rotationY = 0.0
     @State private var fadeOutOpacity = 1.0
+    @State private var tappedKorea = false
     
     var body: some View {
         
