@@ -37,13 +37,15 @@ struct ContentView: View {
     
     @State private var rotationY = 0.0
     @State private var fadeOutOpacity = 1.0
-    @State private var tappedKorea = false
+    @State private var koreaButtonSelected = false
+    @State private var usButtonSelected = false
     
     var body: some View {
-        
-        // TODO: the other one which didn't get the choice <- scale down
         VStack(spacing: 30) {
             Button {
+                koreaButtonSelected = true
+                usButtonSelected = false
+                
                 withAnimation(.spring(duration: 1, bounce: 0.5)) {
                    rotationY += 360
                 }
@@ -53,11 +55,22 @@ struct ContentView: View {
                     .aspectRatio(contentMode: .fit)
                     .shadow(radius: 10)
                     .rotation3DEffect(.degrees(rotationY), axis: (x: 0, y: 1, z: 0))
+                    .scaleEffect(usButtonSelected ? 0.8 : 1.0)
+                    .animation(.default, value: usButtonSelected)
             }
             
             Button {
+                usButtonSelected = true
+                koreaButtonSelected = false
+                
                 withAnimation(.spring(duration: 1, bounce: 0.5)) {
                     fadeOutOpacity = 0.25
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        withAnimation(.spring(duration: 1, bounce: 0.5)) {
+                            fadeOutOpacity = 1.0
+                        }
                 }
             } label: {
                 Image("US")
@@ -65,6 +78,8 @@ struct ContentView: View {
                     .aspectRatio(contentMode: .fit)
                     .shadow(radius: 10)
                     .opacity(fadeOutOpacity)
+                    .scaleEffect(koreaButtonSelected ? 0.8 : 1.0)
+                    .animation(.default, value: koreaButtonSelected)
             }
         }.padding()
         
